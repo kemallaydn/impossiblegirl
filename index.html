@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Doğum Gününe...</title>
+  <style>
+    :root { --pink: #FADDD7; --white: #FFFFFF; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; min-height: 100%; background: var(--white); }
+    body {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    main {
+      width: min(100%, 760px);
+      text-align: center;
+      color: var(--pink);
+      transform: translateY(-2vh);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 4.3vw, 3.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      font-weight: 600;
+    }
+    .countdown {
+      margin-top: clamp(26px, 5vw, 46px);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: clamp(10px, 2.5vw, 24px);
+      font-variant-numeric: tabular-nums;
+    }
+    .time { min-width: clamp(62px, 13vw, 100px); }
+    .value {
+      display: block;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      font-weight: 500;
+    }
+    .label {
+      display: block;
+      margin-top: 9px;
+      font-size: clamp(.65rem, 1.6vw, .8rem);
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: .78;
+    }
+    .colon {
+      font-size: clamp(1.8rem, 5.2vw, 3.5rem);
+      line-height: .95;
+      font-weight: 300;
+      opacity: .72;
+    }
+    @media (max-width: 420px) {
+      body { padding: 20px; }
+      main { transform: translateY(-4vh); }
+      .countdown { gap: 7px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Geç gelen sevgilinin,<br>geç gelen doğum gününe…</h1>
+    <section class="countdown" aria-label="Gece yarısına kalan süre">
+      <div class="time"><span class="value" id="hours">00</span><span class="label">Saat</span></div>
+      <span class="colon">:</span>
+      <div class="time"><span class="value" id="minutes">00</span><span class="label">Dakika</span></div>
+      <span class="colon">:</span>
+      <div class="time"><span class="value" id="seconds">00</span><span class="label">Saniye</span></div>
+    </section>
+  </main>
+  <script>
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const pad = n => String(n).padStart(2, '0');
+
+    function updateCountdown() {
+      const now = new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      const remaining = Math.max(0, midnight - now);
+      const totalSeconds = Math.floor(remaining / 1000);
+      hoursEl.textContent = pad(Math.floor(totalSeconds / 3600));
+      minutesEl.textContent = pad(Math.floor((totalSeconds % 3600) / 60));
+      secondsEl.textContent = pad(totalSeconds % 60);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 250);
+  </script>
+</body>
+</html>
