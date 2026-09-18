@@ -176,9 +176,6 @@ Gerçeklerin en güzel nedeni olan kadınım benim seni veren tanrıya binlerce 
     const letterTrack = document.getElementById('letterTrack');
     const pad = n => String(n).padStart(2, '0');
 
-    const nowAtLoad = new Date();
-    const targetMidnight = new Date(nowAtLoad);
-    targetMidnight.setHours(24, 0, 0, 0);
     let letterStarted = false;
 
     function startLetter() {
@@ -216,8 +213,7 @@ Gerçeklerin en güzel nedeni olan kadınım benim seni veren tanrıya binlerce 
       secondsEl.textContent = pad(totalSeconds % 60);
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 250);
+    startLetter();
   </script>
 </body>
 </html>
