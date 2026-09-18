@@ -11,17 +11,22 @@
     html, body { margin: 0; width: 100%; min-height: 100%; background: var(--black); }
     body {
       min-height: 100svh;
-      display: grid;
-      place-items: center;
+      margin: 0;
       padding: 24px;
+      overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+      color: var(--pink);
     }
-    main {
+    .countdown-screen {
+      min-height: calc(100svh - 48px);
+      display: grid;
+      place-items: center;
+    }
+    .countdown-content {
       width: min(100%, 760px);
       text-align: center;
-      color: var(--pink);
       transform: translateY(-2vh);
     }
     h1 {
@@ -62,35 +67,149 @@
       font-weight: 300;
       opacity: .72;
     }
+
+    .letter-screen {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: var(--black);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1.8s ease;
+    }
+    .letter-screen.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .letter-track {
+      position: absolute;
+      left: 50%;
+      top: 100vh;
+      width: min(88vw, 760px);
+      transform: translateX(-50%);
+      text-align: left;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      line-height: 1.85;
+      letter-spacing: .005em;
+      font-weight: 400;
+      white-space: pre-line;
+      padding: 0 0 55vh;
+      will-change: transform;
+    }
+    .letter-track.roll {
+      animation: dakotaRoll var(--roll-duration) linear forwards;
+    }
+    @keyframes dakotaRoll {
+      from { transform: translate(-50%, 0); }
+      to { transform: translate(-50%, calc(-100% - 100vh)); }
+    }
+
     @media (max-width: 420px) {
       body { padding: 20px; }
-      main { transform: translateY(-4vh); }
+      .countdown-screen { min-height: calc(100svh - 40px); }
+      .countdown-content { transform: translateY(-4vh); }
       .countdown { gap: 7px; }
+      .letter-track {
+        width: 86vw;
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .letter-screen { overflow-y: auto; }
+      .letter-track,
+      .letter-track.roll {
+        position: static;
+        width: min(88vw, 760px);
+        margin: 0 auto;
+        padding: 12vh 0 20vh;
+        transform: none;
+        animation: none;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Geç Gelen SEVGİLİNİN,<br>Geç Gelen Doğum Gününe…</h1>
-    <section class="countdown" aria-label="Gece yarısına kalan süre">
-      <div class="time"><span class="value" id="hours">00</span><span class="label">Saat</span></div>
-      <span class="colon">:</span>
-      <div class="time"><span class="value" id="minutes">00</span><span class="label">Dakika</span></div>
-      <span class="colon">:</span>
-      <div class="time"><span class="value" id="seconds">00</span><span class="label">Saniye</span></div>
-    </section>
+  <main id="countdownScreen" class="countdown-screen">
+    <div class="countdown-content">
+      <h1>Geç Gelen SEVGİLİNİN,<br>Geç Gelen Doğum Gününe…</h1>
+      <section class="countdown" aria-label="Gece yarısına kalan süre">
+        <div class="time"><span class="value" id="hours">00</span><span class="label">Saat</span></div>
+        <span class="colon">:</span>
+        <div class="time"><span class="value" id="minutes">00</span><span class="label">Dakika</span></div>
+        <span class="colon">:</span>
+        <div class="time"><span class="value" id="seconds">00</span><span class="label">Saniye</span></div>
+      </section>
+    </div>
   </main>
+
+  <section id="letterScreen" class="letter-screen" aria-hidden="true">
+    <div id="letterTrack" class="letter-track">Merhaba sevgilim
+
+Bugün Tanrının kitaplarında bahsettiği meleğin dünyaya indiği gün. Bugün belki de beraber olmamızı en çok istediğim sana ne kadar değerli olduğunu hissettirmek için (diğer günler gibi) yanıp tutuştuğum gün. Bugün her şeyin başlangıcı olan gün.
+Bugüne Hoş geldin hayatım iyi ki geldin iyi ki varsın
+
+Güzel birkaç şeyden bahsederek başlamak isterim gülümsemen gibi. Belki farkındasın belki değilsin lakin öyle güzel bir gülüşün var ki basit bir gülüş değil o kadar anlamlı sıcak gülüyorsun ki ona ne kadar iltifat etsem ne kadar sevsem az kalır diye korkuyorum. Sen güldükçe ruhum büyüyor ruhum içime sığmıyor sığmadıkça yüzünde o tebessümü yaratmak için hayat anlam kazanıyor. Bu anlamı asla kaybetmeyelim hayatım gülümsemen yüzünden hiç eksik olmasın. Seni seviyorum iyi ki varsın…
+
+Biraz da gözlerinden bahsetmek isterim. Onlara bakıp kaldığımda kaçırdığın o güzel bal gözlerinden. Beni içine alıp saran gözlerinden. Gözlerinde kaybolduğum anları hatırlıyordum da o kadar masumlar ki onlardan kendimi bir an alıkoyamıyorum.
+O kadar anlam dolu ve sıcak bakıyorlar ki bana her bakışında kalbimi tatlı bir sıcaklık kaplıyor. Gülümsemenle beraber gözlerini aldığı o bakışı ancak tanrının ifade edebileceği güzellikte olduğu için kelimelerim yetmiyor.
+
+Kelimelerim birçok şeye yetmedi bu zamana kadar bazen anlatamadım kendimi ama sen hep anladın o kadar güzel anladın ki evim oldun. Evimi dağıttığım anlar oldu ama şimdi toparlama zamanı. Beraber olduğumuz her anda seninle beraber yüzünü gülümsetmeye yeminler ettiğim zaafım olan kadının doğduğu günde daha büyük bir yeminle giriyoruz bu geceye. Seni seviyorum iyi ki varsın…
+
+Biliyorum Bugünü beraber geçirmek isterdik ikimiz de. Seni sana doğduğun günde gözlerine bakarak anlatmak isterdim saçmalardım bazen sen düzeltirdin beni gülerdik. Beni her düzeltişinde sana biraz daha hayran olurdum. Öylesine olurdum ki susup bakakalırdım sana. Sen de ne bakıyorsun deyip kaçırırdın gözlerini. Kaçıracaksın da geç gelen sevgiliyle geç gelen doğum gününe hazır ol sadece. O gün hissettiklerimi gözlerinde yaşatacağım. Güzel günlere inanarak bekle sadece ne kadar yorgun da hissettirse sonu güzel bitecek her şeyin için beklemeye değer olduğuna inanarak bekle. Seni seviyorum The Girl Who Waited iyi ki varsın…
+
+Yazdıklarım hissettiklerime bakarak o kadar yalnız kalıyor ki bu yalnızlığı yalnız bırakmayacağız. Yalnız bırakmayacağız çünkü bu dünyada olan en güzel kalbe sahip kadın bunu bilmeli hissetmeli. O kadar güzel bir kalbin var ki ona ne kadar değerli olduğunu hatırlatmak istiyorum. Kalbini her dinlediğimde ondaki o büyüklüğü o masumluğu o hayran olduğum sesi duydukça bunu sana haykırmak istiyorum delirme desen de.
+
+Sevgilim hayatım, anlamım, kalbim, doğduğun bu özel günde yanında olamadım kutlayamadım ellerini tutup gözlerine bakarak.
+Sanma ki bunlar geçmiş zamanda kalacak en başta da yazdığı gibi geç gelen sevgilinin geç gelen doğum gününe hazır ol
+
+Gerçeklerin en güzel nedeni olan kadınım benim seni veren tanrıya binlerce kez şükürler olsun. İyi ki bugün doğmuş iyi ki varlığınla dünyama evim olmuşsun seni çok seviyorummm iyi ki doğdun iyi ki varsın hayatımmm sevgilerimle -FAC</div>
+  </section>
+
   <script>
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
     const secondsEl = document.getElementById('seconds');
+    const countdownScreen = document.getElementById('countdownScreen');
+    const letterScreen = document.getElementById('letterScreen');
+    const letterTrack = document.getElementById('letterTrack');
     const pad = n => String(n).padStart(2, '0');
 
+    const nowAtLoad = new Date();
+    const targetMidnight = new Date(nowAtLoad);
+    targetMidnight.setHours(24, 0, 0, 0);
+    let letterStarted = false;
+
+    function startLetter() {
+      if (letterStarted) return;
+      letterStarted = true;
+
+      countdownScreen.style.display = 'none';
+      document.body.style.padding = '0';
+      letterScreen.classList.add('active');
+      letterScreen.setAttribute('aria-hidden', 'false');
+
+      requestAnimationFrame(() => {
+        const distance = letterTrack.scrollHeight + window.innerHeight * 2;
+        const pixelsPerSecond = window.innerWidth <= 420 ? 27 : 34;
+        const duration = Math.max(65, distance / pixelsPerSecond);
+        letterTrack.style.setProperty('--roll-duration', duration + 's');
+        requestAnimationFrame(() => letterTrack.classList.add('roll'));
+      });
+    }
+
     function updateCountdown() {
-      const now = new Date();
-      const midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
-      const remaining = Math.max(0, midnight - now);
+      const remaining = targetMidnight - new Date();
+
+      if (remaining <= 0) {
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        startLetter();
+        return;
+      }
+
       const totalSeconds = Math.floor(remaining / 1000);
       hoursEl.textContent = pad(Math.floor(totalSeconds / 3600));
       minutesEl.textContent = pad(Math.floor((totalSeconds % 3600) / 60));
